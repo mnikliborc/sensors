@@ -3,7 +3,7 @@ package com.epam.sensors
 import zio._
 import zio.console._
 
-case class ProgramResult(processedFiles: Int, processedMeasurements: Int, failedMeasurements: Int, sortedSensors: List[(SensorId, Option[Stats])])
+case class ProgramResult(processedFiles: Int, processedMeasurements: Int, failedMeasurements: Int, sensorsByAvgDesc: List[(SensorId, Option[Stats])])
 
 object Main extends zio.App {
   override def run(args: List[String]) = {
@@ -22,8 +22,8 @@ object Main extends zio.App {
 
       failedMeasurements    = globalAggregates.values.map(_.failedMeasurements).sum
       processedMeasurements = globalAggregates.values.flatMap(_.statsOpt).map(_.count).sum + failedMeasurements
-      sorted                = globalAggregates.mapValues(_.statsOpt).toList.sortBy(-_._2.map(_.avg.value).getOrElse(BigDecimal(-1)))
-    } yield ProgramResult(fileAggregates.size, processedMeasurements, failedMeasurements, sorted)
+      sensorsByAvgDesc      = globalAggregates.mapValues(_.statsOpt).toList.sortBy(-_._2.map(_.avg.value).getOrElse(BigDecimal(-1)))
+    } yield ProgramResult(fileAggregates.size, processedMeasurements, failedMeasurements, sensorsByAvgDesc)
 
   def printAndFail(msg: String) =
     putStrLn(msg) *> ZIO.fail(())

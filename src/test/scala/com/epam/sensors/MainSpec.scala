@@ -11,7 +11,7 @@ class MainSpec extends JUnitRunnableSpec {
         processedFiles = 2,
         processedMeasurements = 7,
         failedMeasurements = 2,
-        sortedSensors = List(
+        sensorsByAvgDesc = List(
           SensorId("s2") -> Some(Stats(Min(78), Max(88), Avg(82), 3)),
           SensorId("s1") -> Some(Stats(Min(10), Max(98), Avg(54), 2)),
           SensorId("s3") -> None,
@@ -23,6 +23,6 @@ class MainSpec extends JUnitRunnableSpec {
   )
 
   def rounded(result: ProgramResult): ProgramResult =
-    result.copy(sortedSensors = result.sortedSensors.map { case (id, stats) => id -> stats.map(_.rounded) })
+    result.copy(sensorsByAvgDesc = result.sensorsByAvgDesc.map { case (id, stats) => id -> stats.map(_.rounded) })
 
 }

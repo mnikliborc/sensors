@@ -14,7 +14,7 @@ object Printer {
       _ <- putStrLn("")
       _ <- putStrLn("sensor-id,min,avg,max")
 
-      _ <- ZIO.foreach(r.sortedSensors)((printAggregate _).tupled)
+      _ <- ZIO.foreach(r.sensorsByAvgDesc)((printAggregate _).tupled)
     } yield ()
 
   def printAggregate(id: SensorId, statsOpt: Option[Stats]): ZIO[Console, Nothing, Unit] = {
