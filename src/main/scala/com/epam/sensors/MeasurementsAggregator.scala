@@ -17,7 +17,7 @@ object MeasurementsAggregator {
             val agg =
               measurement.valueOpt match {
                 case Some(v) => MeasurementAggregate(Some(Stats.init(v)), 0)
-                case None => MeasurementAggregate(None, 1)
+                case None    => MeasurementAggregate(None, 1)
               }
             aggs.updated(sensorId, agg)
         }
